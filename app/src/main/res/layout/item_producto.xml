@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="12dp"
+    android:background="#E1F5FE"
+    android:layout_marginBottom="12dp"
+    android:layout_marginTop="8dp"
+    android:elevation="4dp"
+    android:layout_gravity="center">
+
+    <TextView
+        android:id="@+id/tvProducto"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Producto"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:textColor="#000000"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btnEliminar"
+        app:layout_constraintHorizontal_bias="0"
+        android:paddingEnd="8dp" />
+
+    <ImageButton
+        android:id="@+id/btnEliminar"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:src="@android:drawable/ic_menu_delete"
+        android:background="@android:color/transparent"
+        app:tint="#F44336"
+        android:contentDescription="Eliminar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/tvPresentacion"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Presentación"
+        android:textColor="#000000"
+        app:layout_constraintTop_toBottomOf="@id/tvProducto"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:paddingTop="4dp" />
+
+    <TextView
+        android:id="@+id/tvCantidad"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Cantidad"
+        android:textColor="#000000"
+        app:layout_constraintTop_toBottomOf="@id/tvPresentacion"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:paddingTop="4dp" />
+
+    <TextView
+        android:id="@+id/tvPrecioUnitario"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Precio Unitario"
+        android:textColor="#000000"
+        app:layout_constraintTop_toBottomOf="@id/tvCantidad"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:paddingTop="4dp" />
+
+    <TextView
+        android:id="@+id/tvPrecioTotal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Precio Total"
+        android:textStyle="bold"
+        android:textColor="#1976D2"
+        app:layout_constraintTop_toBottomOf="@id/tvPrecioUnitario"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:paddingTop="8dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
