@@ -8,9 +8,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.oil_app.ENTITY.CostoEntity;
+import com.example.oil_app.data.entity.CostoEntity;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -24,12 +25,17 @@ public class CostoAdapter extends RecyclerView.Adapter<CostoAdapter.ViewHolder> 
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_ITEM = 1;
 
-    List<CostoEntity> lista;
-    OnItemLongClick listener;
+    private List<CostoEntity> lista = new ArrayList<>();
+    private final OnItemLongClick listener;
 
-    public CostoAdapter(List<CostoEntity> lista, OnItemLongClick listener) {
-        this.lista = lista;
+    public CostoAdapter(OnItemLongClick listener) {
         this.listener = listener;
+    }
+
+    /** Antes: la Activity mutaba listaCostos.clear()/addAll() y llamaba notifyDataSetChanged() a mano. */
+    public void actualizarLista(List<CostoEntity> nuevaLista) {
+        this.lista = nuevaLista;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -50,26 +56,22 @@ public class CostoAdapter extends RecyclerView.Adapter<CostoAdapter.ViewHolder> 
         if (position == 0) return; // Encabezado
 
         CostoEntity costo = lista.get(position - 1);
-
         Locale localeEspañol = new Locale("es", "PE");
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy", localeEspañol);
         String fecha = sdf.format(new Date(costo.fechaRegistro));
 
-        String[] parts = fecha.split(" "); // Dividir la fecha en partes (día, mes, año)
+        String[] parts = fecha.split(" ");
         String fechaFinal = parts[0] + " de " + capitalize(parts[1]) + " del " + parts[2];
 
         holder.textFecha.setText(fechaFinal);
         holder.textCosto.setText(costo.moneda + " " + String.format(Locale.getDefault(), "%.2f", costo.costo));
 
-
         holder.btnEliminar.setOnClickListener(v -> listener.onLongClick(costo));
     }
 
     private String capitalize(String word) {
-        if (word == null || word.isEmpty()) {
-            return word;
-        }
+        if (word == null || word.isEmpty()) return word;
         return word.substring(0, 1).toUpperCase() + word.substring(1).toLowerCase();
     }
 
@@ -90,5 +92,3 @@ public class CostoAdapter extends RecyclerView.Adapter<CostoAdapter.ViewHolder> 
         }
     }
 }
-
-

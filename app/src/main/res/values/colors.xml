@@ -2,4 +2,12 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Paleta de Cotización (nueva) -->
+    <color name="cotizacion_bg">#F2F5F7</color>
+    <color name="cotizacion_primary">#1B3A4B</color>
+    <color name="cotizacion_card">#FFFFFF</color>
+    <color name="cotizacion_border">#DCE3E8</color>
+    <color name="cotizacion_text_secondary">#66798A</color>
+    <color name="cotizacion_money">#2E7D5B</color>
 </resources>

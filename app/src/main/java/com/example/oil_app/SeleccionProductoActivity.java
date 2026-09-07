@@ -2,30 +2,26 @@ package com.example.oil_app;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
-import com.example.oil_app.ENTITY.PresentacionEntity;
-import com.example.oil_app.ENTITY.ProductoEntity;
+import com.example.oil_app.data.entity.ProductoEntity;
+import com.example.oil_app.viewmodel.SeleccionProductoViewModel;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class SeleccionProductoActivity extends AppCompatActivity {
 
     AutoCompleteTextView autoProducto, autoPresentacion;
     Button btnContinuar;
 
-    AppDatabase db;
-    Map<String, Integer> productoMap = new HashMap<>();
-    Map<String, Integer> presentacionMap = new HashMap<>();
+    private SeleccionProductoViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,106 +32,52 @@ public class SeleccionProductoActivity extends AppCompatActivity {
         autoPresentacion = findViewById(R.id.autoPresentacion);
         btnContinuar = findViewById(R.id.btnContinuar);
 
-        db = AppDatabase.getInstance(this);
-
-        // Deshabilitar campos hasta que se carguen los datos
+        // Deshabilitar campos hasta que se carguen los datos (igual que antes)
         autoProducto.setEnabled(false);
         autoPresentacion.setEnabled(false);
 
-        cargarProductosDesdeBaseDeDatos();
-        cargarPresentacionesDesdeBaseDeDatos();
+        viewModel = new ViewModelProvider(this).get(SeleccionProductoViewModel.class);
 
-        btnContinuar.setOnClickListener(v -> {
-            String nombreProd = autoProducto.getText().toString().trim();
-            String nombrePres = autoPresentacion.getText().toString().trim();
+        // --- Observers: reemplazan a los runOnUiThread(...) de antes ---
 
-            if (nombreProd.isEmpty() || nombrePres.isEmpty()) {
-                Toast.makeText(this, "Selecciona un producto y una presentación", Toast.LENGTH_SHORT).show();
-                return;
-            }
+        viewModel.getProductos().observe(this, productos -> {
+            List<String> nombres = new ArrayList<>();
+            for (ProductoEntity p : productos) nombres.add(p.nombre);
 
-            if (!productoMap.containsKey(nombreProd)) {
-                Toast.makeText(this, "Producto no válido", Toast.LENGTH_SHORT).show();
-                return;
-            }
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                    this, R.layout.item_dropdown_producto, R.id.dropdownText, nombres);
+            autoProducto.setAdapter(adapter);
+            autoProducto.setThreshold(3);
+            autoProducto.setEnabled(true);
+        });
 
-            if (!presentacionMap.containsKey(nombrePres)) {
-                Toast.makeText(this, "Presentación no válida", Toast.LENGTH_SHORT).show();
-                return;
-            }
+        viewModel.getPresentaciones().observe(this, presentaciones -> {
+            List<String> nombres = new ArrayList<>();
+            for (var p : presentaciones) nombres.add(p.presentacion);
 
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                    this, R.layout.item_dropdown_producto, R.id.dropdownText, nombres);
+            autoPresentacion.setAdapter(adapter);
+            autoPresentacion.setThreshold(2);
+            autoPresentacion.setEnabled(true);
+        });
+
+        viewModel.getMensajeError().observe(this, mensaje ->
+                Toast.makeText(this, mensaje, Toast.LENGTH_SHORT).show());
+
+        viewModel.getNavegarACostos().observe(this, seleccion -> {
             Intent intent = new Intent(this, RegistrarCostosActivity.class);
-            intent.putExtra("productoId", productoMap.get(nombreProd));
-            intent.putExtra("presentacionId", presentacionMap.get(nombrePres));
-            intent.putExtra("productoNombre", nombreProd);
-            intent.putExtra("presentacionNombre", nombrePres);
+            intent.putExtra("productoId", seleccion.productoId);
+            intent.putExtra("presentacionId", seleccion.presentacionId);
+            intent.putExtra("productoNombre", seleccion.productoNombre);
+            intent.putExtra("presentacionNombre", seleccion.presentacionNombre);
             startActivity(intent);
         });
-    }
 
-    private void cargarPresentacionesDesdeBaseDeDatos() {
-        new Thread(() -> {
-            try {
-                List<PresentacionEntity> presentacionesDb = db.presentacionDao().obtenerTodos();
-                List<String> nombresPresentaciones = new ArrayList<>();
-                presentacionMap.clear();
-
-                for (PresentacionEntity presentacion : presentacionesDb) {
-                    nombresPresentaciones.add(presentacion.presentacion);
-                    presentacionMap.put(presentacion.presentacion, presentacion.id);
-                }
-
-                Log.d("Presentaciones", nombresPresentaciones.toString());
-
-                runOnUiThread(() -> {
-                    ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                            this,
-                            R.layout.item_dropdown_producto,
-                            R.id.dropdownText,
-                            nombresPresentaciones
-                    );
-                    autoPresentacion.setAdapter(adapter);
-                    autoPresentacion.setThreshold(2);
-                    autoPresentacion.setEnabled(true);  // Habilitar después de cargar
-                });
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }).start();
-    }
-
-    private void cargarProductosDesdeBaseDeDatos() {
-        new Thread(() -> {
-            try {
-                List<ProductoEntity> productosDb = db.productoDao().obtenerTodos();
-                List<String> nombresProductos = new ArrayList<>();
-                productoMap.clear();
-
-                for (ProductoEntity producto : productosDb) {
-                    nombresProductos.add(producto.nombre);
-                    productoMap.put(producto.nombre, producto.id);
-                }
-
-                Log.d("Productos", nombresProductos.toString());
-
-                runOnUiThread(() -> {
-                    ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                            this,
-                            R.layout.item_dropdown_producto,
-                            R.id.dropdownText,
-                            nombresProductos
-                    );
-                    autoProducto.setAdapter(adapter);
-                    autoProducto.setThreshold(3);
-                    autoProducto.setEnabled(true);  // Habilitar después de cargar
-                });
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }).start();
+        // --- El listener del botón ahora solo delega al ViewModel ---
+        btnContinuar.setOnClickListener(v -> viewModel.onContinuarClic(
+                autoProducto.getText().toString(),
+                autoPresentacion.getText().toString()
+        ));
     }
 }
-
-

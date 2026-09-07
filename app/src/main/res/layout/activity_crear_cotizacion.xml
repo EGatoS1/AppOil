@@ -4,138 +4,262 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#E3F2FD"
-    android:padding="24dp"
-    tools:context=".MainActivity">
+    android:background="@color/cotizacion_bg"
+    tools:context=".CrearCotizacionActivity">
 
-    <EditText
-        android:id="@+id/inputCliente"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:hint="Nombre del cliente"
-        android:background="@drawable/edittext_bg"
-        android:padding="12dp"
-        android:textColor="#000000"
-        android:inputType="textCapCharacters"
-        android:textColorHint="#757575"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="12dp" />
-
-    <Spinner
-        android:id="@+id/inputVendedor"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:hint="Vendedor"
-        android:background="@drawable/edittext_bg"
-        android:popupBackground="@drawable/custom_dropdown_background"
-        android:padding="12dp"
-        android:textColor="#000000"
-        android:inputType="textCapCharacters"
-        android:textColorHint="#757575"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/inputCliente"
-        android:layout_marginTop="12dp" />
-
-    <AutoCompleteTextView
-        android:id="@+id/inputProducto"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:hint="Buscar producto"
-        android:background="@drawable/edittext_bg"
-        android:popupBackground="@drawable/custom_dropdown_background"
-        android:padding="12dp"
-        android:inputType="textCapCharacters"
-        android:textColor="#000000"
-        android:textColorHint="#757575"
-        app:layout_constraintTop_toBottomOf="@id/inputVendedor"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp" />
-
-    <AutoCompleteTextView
-        android:id="@+id/inputPresentacion"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:hint="Buscar presentación"
-        android:background="@drawable/edittext_bg"
-        android:popupBackground="@drawable/custom_dropdown_background"
-        android:padding="12dp"
-        android:inputType="textCapCharacters"
-        android:textColor="#000000"
-        android:textColorHint="#757575"
-        app:layout_constraintTop_toBottomOf="@id/inputProducto"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp" />
-
-    <EditText
-        android:id="@+id/inputCantidad"
-        android:layout_width="0dp"
-        android:layout_height="46dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="10dp"
-        android:background="@drawable/edittext_bg"
-        android:hint="Cantidad"
-        android:inputType="number"
-        android:padding="12dp"
-        android:textColor="#000000"
-        android:textColorHint="#757575"
-        app:layout_constraintEnd_toStartOf="@+id/inputPrecioUnitario"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/inputPresentacion" />
-
-    <EditText
-        android:id="@+id/inputPrecioUnitario"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/edittext_bg"
-        android:hint="Precio Unitario"
-        android:inputType="numberDecimal"
-        android:padding="12dp"
-        android:textColor="#000000"
-        android:textColorHint="#757575"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/inputCantidad"
-        app:layout_constraintTop_toBottomOf="@+id/inputPresentacion" />
-
-    <Button
-        android:id="@+id/btnAgregarProducto"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:text="Agregar a Cotización"
-        android:textColor="#FFFFFF"
-        android:background="@drawable/button_selector"
-        android:minWidth="120dp"
-        app:layout_constraintTop_toBottomOf="@id/inputPrecioUnitario"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerProductos"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintTop_toBottomOf="@id/btnAgregarProducto"
-        app:layout_constraintBottom_toTopOf="@id/btnGenerarBoleta"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/barraTotal"
+        android:clipToPadding="false"
+        android:paddingBottom="12dp">
 
-    <Button
-        android:id="@+id/btnGenerarBoleta"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp">
+
+            <!-- Tarjeta 1: datos de la cotización -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cardDatos"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/cotizacion_card_bg"
+                android:padding="16dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <TextView
+                    android:id="@+id/tituloDatos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="DATOS DE LA COTIZACIÓN"
+                    android:textStyle="bold"
+                    android:textSize="12sp"
+                    android:letterSpacing="0.08"
+                    android:textColor="@color/cotizacion_text_secondary"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <EditText
+                    android:id="@+id/inputCliente"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:hint="Nombre del cliente"
+                    android:background="@drawable/edittext_bg"
+                    android:padding="12dp"
+                    android:textColor="#000000"
+                    android:inputType="textCapCharacters"
+                    android:textColorHint="#90A4AE"
+                    app:layout_constraintTop_toBottomOf="@id/tituloDatos"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginTop="10dp" />
+
+                <Spinner
+                    android:id="@+id/inputVendedor"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:hint="Vendedor"
+                    android:background="@drawable/edittext_bg"
+                    android:popupBackground="@drawable/custom_dropdown_background"
+                    android:padding="12dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/spinnerMoneda"
+                    app:layout_constraintTop_toBottomOf="@id/inputCliente"
+                    app:layout_constraintHorizontal_chainStyle="spread_inside"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="8dp" />
+
+                <Spinner
+                    android:id="@+id/spinnerMoneda"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:background="@drawable/edittext_bg"
+                    android:padding="12dp"
+                    android:popupBackground="@drawable/custom_dropdown_background"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/inputVendedor"
+                    app:layout_constraintTop_toTopOf="@id/inputVendedor" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- Tarjeta 2: agregar producto -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cardAgregar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/cotizacion_card_bg"
+                android:padding="16dp"
+                android:layout_marginTop="12dp"
+                app:layout_constraintTop_toBottomOf="@id/cardDatos"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <TextView
+                    android:id="@+id/tituloAgregar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="AGREGAR PRODUCTO"
+                    android:textStyle="bold"
+                    android:textSize="12sp"
+                    android:letterSpacing="0.08"
+                    android:textColor="@color/cotizacion_text_secondary"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <AutoCompleteTextView
+                    android:id="@+id/inputProducto"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:hint="Buscar producto"
+                    android:background="@drawable/edittext_bg"
+                    android:popupBackground="@drawable/custom_dropdown_background"
+                    android:padding="12dp"
+                    android:inputType="textCapCharacters"
+                    android:textColor="#000000"
+                    android:textColorHint="#90A4AE"
+                    app:layout_constraintTop_toBottomOf="@id/tituloAgregar"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginTop="10dp" />
+
+                <AutoCompleteTextView
+                    android:id="@+id/inputPresentacion"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:hint="Buscar presentación"
+                    android:background="@drawable/edittext_bg"
+                    android:popupBackground="@drawable/custom_dropdown_background"
+                    android:padding="12dp"
+                    android:inputType="textCapCharacters"
+                    android:textColor="#000000"
+                    android:textColorHint="#90A4AE"
+                    app:layout_constraintTop_toBottomOf="@id/inputProducto"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginTop="10dp" />
+
+                <EditText
+                    android:id="@+id/inputCantidad"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/edittext_bg"
+                    android:hint="Cantidad"
+                    android:inputType="number"
+                    android:padding="12dp"
+                    android:textColor="#000000"
+                    android:textColorHint="#90A4AE"
+                    app:layout_constraintEnd_toStartOf="@+id/inputPrecioUnitario"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/inputPresentacion" />
+
+                <EditText
+                    android:id="@+id/inputPrecioUnitario"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/edittext_bg"
+                    android:hint="Precio unitario"
+                    android:inputType="numberDecimal"
+                    android:padding="12dp"
+                    android:textColor="#000000"
+                    android:textColorHint="#90A4AE"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/inputCantidad"
+                    app:layout_constraintTop_toBottomOf="@+id/inputPresentacion" />
+
+                <Button
+                    android:id="@+id/btnAgregarProducto"
+                    android:layout_width="0dp"
+                    android:layout_height="46dp"
+                    android:text="+ Agregar a la cotización"
+                    android:textAllCaps="false"
+                    android:textColor="#FFFFFF"
+                    android:background="@drawable/button_selector"
+                    app:layout_constraintTop_toBottomOf="@id/inputCantidad"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginTop="12dp" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/tituloLista"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="PRODUCTOS EN ESTA COTIZACIÓN"
+                android:textStyle="bold"
+                android:textSize="12sp"
+                android:letterSpacing="0.08"
+                android:textColor="@color/cotizacion_text_secondary"
+                app:layout_constraintTop_toBottomOf="@id/cardAgregar"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="18dp"
+                android:layout_marginBottom="8dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerProductos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/tituloLista"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- Barra de total fija: el elemento nuevo que resuelve lo de la moneda,
+         y le da a la pantalla algo que antes no tenía: feedback en vivo. -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/barraTotal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Generar Boleta"
-        app:layout_constraintTop_toBottomOf="@id/recyclerProductos"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        android:background="@drawable/cotizacion_total_bar_bg"
+        android:padding="16dp"
+        app:layout_constraintBottom_toBottomOf="parent">
 
+        <TextView
+            android:id="@+id/tvEtiquetaTotal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Total de la cotización"
+            android:textSize="12sp"
+            android:textColor="#B0C4D0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvTotalCotizacion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="S/ 0.00"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvEtiquetaTotal" />
+
+        <Button
+            android:id="@+id/btnGenerarBoleta"
+            android:layout_width="wrap_content"
+            android:layout_height="46dp"
+            android:text="Generar boleta"
+            android:textAllCaps="false"
+            android:textColor="@color/cotizacion_primary"
+            android:background="@drawable/edittext_bg"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
