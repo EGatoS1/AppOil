@@ -98,7 +98,6 @@ public class BoletaPreviewActivity extends AppCompatActivity {
         pintarContenidoEstatico();
         pintarDecoracionesDeTitulo();
 
-        // --- Observer: pinta todo lo que el ViewModel ya calculó y formateó ---
         viewModel.getUiState().observe(this, estado -> {
             tvNombreCliente.setText(estado.nombreCliente);
             tvCodigoBoleta.setText(estado.codigoBoleta);
