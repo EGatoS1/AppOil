@@ -1,0 +1,87 @@
+ (cd "$(git rev-parse --show-toplevel)" && git apply --3way <<'EOF' 
+diff --git a/app/src/main/res/layout/activity_main.xml b/app/src/main/res/layout/activity_main.xml
+new file mode 100644
+index 0000000000000000000000000000000000000000..5b08d3afef32555acdca4ffd004c59d503fbedb1
+--- /dev/null
++++ b/app/src/main/res/layout/activity_main.xml
+@@ -0,0 +1,77 @@
++<?xml version="1.0" encoding="utf-8"?>
++<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
++    android:layout_width="match_parent"
++    android:layout_height="match_parent"
++    android:background="#0F172A"
++    android:padding="24dp">
++
++    <LinearLayout
++        android:layout_width="match_parent"
++        android:layout_height="wrap_content"
++        android:gravity="center_horizontal"
++        android:orientation="vertical">
++
++        <TextView
++            android:id="@+id/tvWelcome"
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"
++            android:layout_marginBottom="12dp"
++            android:letterSpacing="0.05"
++            android:text="Bienvenido"
++            android:textColor="#FFFFFF"
++            android:textSize="28sp"
++            android:textStyle="bold" />
++
++        <TextView
++            android:id="@+id/tvDescription"
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"
++            android:alpha="0.85"
++            android:gravity="center"
++            android:lineSpacingExtra="4dp"
++            android:text="Selecciona una opción para comenzar"
++            android:textColor="#E5E7EB"
++            android:textSize="16sp" />
++
++        <LinearLayout
++            android:layout_width="match_parent"
++            android:layout_height="wrap_content"
++            android:layout_marginTop="32dp"
++            android:gravity="center"
++            android:orientation="vertical">
++
++            <Button
++                android:id="@+id/btnServices"
++                android:layout_width="match_parent"
++                android:layout_height="wrap_content"
++                android:layout_marginBottom="16dp"
++                android:background="@android:drawable/btn_default"
++                android:backgroundTint="#2563EB"
++                android:drawablePadding="16dp"
++                android:drawableStart="@android:drawable/ic_menu_manage"
++                android:elevation="6dp"
++                android:fontFamily="sans-serif-medium"
++                android:paddingVertical="16dp"
++                android:text="Servicios"
++                android:textAllCaps="false"
++                android:textColor="#FFFFFF"
++                android:textSize="18sp" />
++
++            <Button
++                android:id="@+id/btnProducts"
++                android:layout_width="match_parent"
++                android:layout_height="wrap_content"
++                android:background="@android:drawable/btn_default"
++                android:backgroundTint="#22C55E"
++                android:drawablePadding="16dp"
++                android:drawableStart="@android:drawable/ic_menu_agenda"
++                android:elevation="6dp"
++                android:fontFamily="sans-serif-medium"
++                android:paddingVertical="16dp"
++                android:text="Productos"
++                android:textAllCaps="false"
++                android:textColor="#FFFFFF"
++                android:textSize="18sp" />
++        </LinearLayout>
++    </LinearLayout>
++</ScrollView>
+ 
+EOF
+)
